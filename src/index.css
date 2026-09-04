@@ -1,111 +1,250 @@
+@import "tailwindcss";
+
+/* ── Jarvis Design Tokens ── */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --jarvis-bg: #060b18;
+  --jarvis-bg-panel: rgba(6, 11, 24, 0.85);
+  --jarvis-cyan: #00d4ff;
+  --jarvis-cyan-dim: #0891b2;
+  --jarvis-cyan-glow: rgba(0, 212, 255, 0.3);
+  --jarvis-blue: #1e90ff;
+  --jarvis-blue-dark: #0a1628;
+  --jarvis-amber: #f59e0b;
+  --jarvis-red: #ef4444;
+  --jarvis-green: #22c55e;
+  --jarvis-text: #e0f7ff;
+  --jarvis-text-dim: #6b8fa3;
+  --jarvis-border: rgba(0, 212, 255, 0.15);
+  --jarvis-border-active: rgba(0, 212, 255, 0.5);
+  --font-mono: 'Fira Code', 'Share Tech Mono', monospace;
+  --font-display: 'Orbitron', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+@theme {
+  --color-jarvis-bg: #060b18;
+  --color-jarvis-panel: rgba(6, 11, 24, 0.85);
+  --color-jarvis-cyan: #00d4ff;
+  --color-jarvis-cyan-dim: #0891b2;
+  --color-jarvis-blue: #1e90ff;
+  --color-jarvis-amber: #f59e0b;
+  --color-jarvis-red: #ef4444;
+  --color-jarvis-green: #22c55e;
+  --color-jarvis-text: #e0f7ff;
+  --color-jarvis-text-dim: #6b8fa3;
+  --color-jarvis-border: rgba(0, 212, 255, 0.15);
+  --color-jarvis-border-active: rgba(0, 212, 255, 0.5);
+  --color-jarvis-glow: rgba(0, 212, 255, 0.3);
+  --font-family-mono: 'Fira Code', 'Share Tech Mono', monospace;
+  --font-family-display: 'Orbitron', sans-serif;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  margin: 0;
+  font-family: var(--font-mono);
+  background: var(--jarvis-bg);
+  color: var(--jarvis-text);
+  overflow-x: hidden;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+::selection {
+  background: var(--jarvis-cyan);
+  color: var(--jarvis-bg);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+::-webkit-scrollbar {
+  width: 4px;
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+::-webkit-scrollbar-track {
+  background: var(--jarvis-bg);
 }
-p {
-  margin: 0;
+::-webkit-scrollbar-thumb {
+  background: var(--jarvis-cyan-dim);
+  border-radius: 2px;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ── Glow Effects ── */
+.glow-text {
+  text-shadow: 0 0 10px var(--jarvis-cyan-glow), 0 0 20px var(--jarvis-cyan-glow);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.glow-border {
+  border: 1px solid var(--jarvis-border-active);
+  box-shadow: 0 0 15px var(--jarvis-cyan-glow), inset 0 0 15px rgba(0, 212, 255, 0.05);
+}
+
+.glow-line {
+  background: linear-gradient(90deg, transparent, var(--jarvis-cyan), transparent);
+  height: 1px;
+}
+
+/* ── HUD Panel ── */
+.hud-panel {
+  background: var(--jarvis-bg-panel);
+  border: 1px solid var(--jarvis-border);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.hud-panel::before,
+.hud-panel::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--jarvis-cyan);
+}
+
+.hud-panel::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.hud-panel::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* ── Scanline overlay ── */
+.scanline::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 212, 255, 0.012) 2px,
+    rgba(0, 212, 255, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Arc Reactor ── */
+.arc-reactor {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.arc-reactor .core {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0.2) 40%, transparent 70%);
+  animation: pulse-core 2s ease-in-out infinite;
+}
+
+.arc-reactor .ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--jarvis-cyan);
+  opacity: 0.6;
+  animation: spin-ring 8s linear infinite;
+}
+.arc-reactor .ring:nth-child(2) {
+  inset: 15px;
+  border-style: dashed;
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+.arc-reactor .ring:nth-child(3) {
+  inset: 30px;
+  border-width: 1px;
+  animation-duration: 6s;
+}
+.arc-reactor .ring:nth-child(4) {
+  inset: 45px;
+  border-style: dotted;
+  animation-duration: 10s;
+  animation-direction: reverse;
+}
+
+@keyframes pulse-core {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes spin-ring {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Typing cursor ── */
+.typing-cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--jarvis-cyan);
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Hex grid background ── */
+.hex-grid-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%2300d4ff' fill-opacity='0.03'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── Skill bar ── */
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--jarvis-cyan-dim), var(--jarvis-cyan));
+  box-shadow: 0 0 10px var(--jarvis-cyan-glow);
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Status dot ── */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--jarvis-green);
+  box-shadow: 0 0 6px var(--jarvis-green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ── Boot sequence ── */
+@keyframes boot-flicker {
+  0%, 4%, 8%, 12% { opacity: 0; }
+  2%, 6%, 10%, 14%, 100% { opacity: 1; }
+}
+.boot-flicker {
+  animation: boot-flicker 0.5s ease-out forwards;
+}
+
+/* ── Profile scan sweep ── */
+@keyframes scan-sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+/* ── Tech stack orbits ── */
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes orbit-counter-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
