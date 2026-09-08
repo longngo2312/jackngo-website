@@ -1,197 +1,212 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
-import { profile } from "../data/profile";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react'
+import { profile } from '../data/profile'
+import { Section, SectionHeader } from './ui'
+import { GithubIcon, LinkedinIcon, MailIcon, PhoneIcon, PinIcon, DownloadIcon } from './icons'
 
 export default function ContactSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".contact-item", {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: "power2.out",
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="min-h-screen w-full py-24 px-4 md:px-8 lg:px-16 flex items-center justify-center"
-    >
-      <div className="max-w-3xl mx-auto w-full flex flex-col items-center">
-        {/* Section header */}
-        <div className="contact-item flex items-center gap-4 mb-16 w-full">
-          <span className="font-[family-name:var(--font-display)] text-[var(--jarvis-cyan)] text-xs tracking-[0.3em]">
-            04
-          </span>
-          <div className="glow-line flex-1" />
-          <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl tracking-[0.2em] text-[var(--jarvis-cyan)] glow-text">
-            CONNECT
-          </h2>
-          <div className="glow-line flex-1" />
-        </div>
+    <Section id="contact">
+      <SectionHeader
+        eyebrow="Get In Touch"
+        title="Contact"
+        framing="Open to Summer 2027 software engineering internships — full-stack, backend, and applied AI."
+      />
 
-        <div className="contact-item hud-panel p-8 md:p-12 text-center w-full flex flex-col items-center">
-          <div className="arc-reactor mb-8 scale-50">
-            <div className="core" />
-            <div className="ring" />
-            <div className="ring" />
-            <div className="ring" />
-            <div className="ring" />
-          </div>
-
-          <p className="text-sm text-[var(--jarvis-text)] mb-8 max-w-lg leading-relaxed">
-            Currently seeking{" "}
-            <span className="text-[var(--jarvis-cyan)]">
-              Summer 2027 SWE internships
-            </span>{" "}
-            in backend and applied AI/ML infrastructure. Open to collaboration
-            on interesting problems.
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* ── Direct channels ── */}
+        <div className="reveal panel edge-lit flex flex-col p-7 sm:p-9">
+          <h3 className="font-display text-[26px] font-semibold text-ink">
+            Let&rsquo;s Work Together
+          </h3>
+          <p className="mt-3 text-[14.5px] leading-[1.8] text-ink-soft">
+            The fastest way to reach me is email — I answer everything. Happy to talk through a role,
+            a project, or anything on this page in more detail.
           </p>
 
-          {/* Contact links */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-lg">
-            <ContactLink
-              href={`mailto:${profile.email}`}
-              label="EMAIL"
-              value={profile.email}
+          <ul className="mt-8 flex flex-col">
+            <ContactRow icon={<MailIcon />} label="Email" value={profile.email} href={`mailto:${profile.email}`} />
+            <ContactRow
+              icon={<PhoneIcon />}
+              label="Phone"
+              value={profile.phone}
+              href={`tel:${profile.phone.replace(/[^\d+]/g, '')}`}
             />
-            <ContactLink
-              href={profile.links.linkedin}
-              label="LINKEDIN"
+            <ContactRow
+              icon={<LinkedinIcon />}
+              label="LinkedIn"
               value="long-thien-ngo"
+              href={profile.links.linkedin}
+              external
             />
-            <ContactLink
-              href={profile.links.github}
-              label="GITHUB"
+            <ContactRow
+              icon={<GithubIcon />}
+              label="GitHub"
               value="longngo2312"
+              href={profile.links.github}
+              external
             />
-          </div>
+            <ContactRow icon={<PinIcon />} label="Location" value={profile.location} />
+          </ul>
 
-          {/* Transmission form */}
-          <TransmissionForm />
+          <a
+            href={profile.links.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-auto flex items-center justify-center gap-2.5 rounded-xl bg-linear-to-r from-teal to-sky px-6 py-4 text-[14px] font-semibold text-deep shadow-[0_0_34px_-12px_rgba(45,212,191,0.85)] transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            <DownloadIcon />
+            Download Résumé
+          </a>
         </div>
 
-        {/* Footer */}
-        <footer className="contact-item mt-12 text-center">
-          <div className="glow-line w-48 mx-auto mb-6" />
-          <p className="text-[10px] text-[var(--jarvis-text-dim)] tracking-[0.2em]">
-            DESIGNED & BUILT BY LONG NGO
-          </p>
-          <p className="text-[10px] text-[var(--jarvis-text-dim)] tracking-[0.2em] mt-1">
-            J.A.R.V.I.S.
-          </p>
-        </footer>
+        {/* ── Message composer ── */}
+        <ContactForm />
       </div>
-    </section>
-  );
+
+      <footer className="reveal mt-16 flex flex-col items-center gap-2 border-t border-line-soft pt-8 text-center">
+        <p className="font-mono text-[12px] text-ink-faint">
+          <span className="text-teal">{profile.prompt}</span> exit
+        </p>
+        <p className="text-[12.5px] text-ink-faint">
+          Built by {profile.name} with React, TypeScript &amp; Tailwind.
+        </p>
+      </footer>
+    </Section>
+  )
 }
 
-function ContactLink({
-  href,
+function ContactRow({
+  icon,
   label,
   value,
+  href,
+  external,
 }: {
-  href: string;
-  label: string;
-  value: string;
+  icon: React.ReactNode
+  label: string
+  value: string
+  href?: string
+  external?: boolean
 }) {
+  const body = (
+    <>
+      <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-line-soft text-ink-mute transition-colors duration-300 group-hover:border-line-hot group-hover:text-teal">
+        {icon}
+      </span>
+      <span className="min-w-0">
+        <span className="block font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-faint">
+          {label}
+        </span>
+        <span
+          className={`block truncate text-[14px] ${href ? 'text-sky group-hover:text-teal' : 'text-ink-soft'} transition-colors duration-300`}
+        >
+          {value}
+        </span>
+      </span>
+    </>
+  )
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="contact-item group glow-border px-4 py-3 w-full flex flex-col items-center justify-center text-center transition-all hover:bg-[rgba(0,212,255,0.08)]"
-    >
-      <div className="text-[10px] tracking-[0.2em] text-[var(--jarvis-text-dim)] mb-1">
-        {label}
-      </div>
-      <div className="text-xs text-[var(--jarvis-cyan)] group-hover:glow-text transition-all truncate max-w-full">
-        {value}
-      </div>
-    </a>
-  );
+    <li className="border-b border-line-soft last:border-b-0">
+      {href ? (
+        <a
+          href={href}
+          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          className="group flex items-center gap-4 py-4"
+        >
+          {body}
+        </a>
+      ) : (
+        <div className="group flex items-center gap-4 py-4">{body}</div>
+      )}
+    </li>
+  )
 }
 
-function TransmissionForm() {
-  const [sent, setSent] = useState(false);
+/**
+ * No backend on this site, so the form composes a prefilled mail draft and
+ * hands it to the visitor's mail client. Nothing is sent silently.
+ */
+function ContactForm() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const message = (form.elements.namedItem("message") as HTMLTextAreaElement)
-      .value;
-    // Open mailto with pre-filled content
-    window.location.href = `mailto:${profile.email}?subject=Contact from ${name}&body=${encodeURIComponent(message)}`;
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
-  };
+    e.preventDefault()
+    const subject = encodeURIComponent(`Portfolio inquiry from ${name || 'a visitor'}`)
+    const body = encodeURIComponent(`${message}\n\n— ${name}\n${email}`)
+    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-12 w-full max-w-md flex flex-col items-center gap-6"
-    >
-      <div className="w-full flex flex-col items-center gap-3">
-        <div className="glow-line w-24" />
-        <div className="text-xs tracking-[0.25em] text-[var(--jarvis-cyan)] font-[family-name:var(--font-display)]">
-          OPEN TRANSMISSION
-        </div>
-      </div>
-
-      <div className="w-full flex flex-col gap-5">
-        <Field name="name" type="text" placeholder="Name" />
-        <Field name="email" type="email" placeholder="Email" />
-        <textarea
-          name="message"
-          placeholder="Message"
-          rows={3}
+    <form onSubmit={handleSubmit} className="reveal panel flex flex-col p-7 sm:p-9">
+      <Field label="Your name" htmlFor="cf-name">
+        <input
+          id="cf-name"
           required
-          className="w-full bg-transparent border-b border-[var(--jarvis-border)] pb-2 text-sm text-center text-[var(--jarvis-text)] placeholder-[var(--jarvis-text-dim)] focus:border-[var(--jarvis-cyan)] focus:outline-none transition-colors resize-none"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="Ada Lovelace"
+          className="w-full rounded-xl border border-line-soft bg-deep/60 px-4 py-3.5 text-[14px] text-ink placeholder:text-ink-faint focus:border-line-hot focus:outline-none"
         />
-      </div>
+      </Field>
+
+      <Field label="Email address" htmlFor="cf-email">
+        <input
+          id="cf-email"
+          type="email"
+          required
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="ada@example.com"
+          className="w-full rounded-xl border border-line-soft bg-deep/60 px-4 py-3.5 text-[14px] text-ink placeholder:text-ink-faint focus:border-line-hot focus:outline-none"
+        />
+      </Field>
+
+      <Field label="Message" htmlFor="cf-message">
+        <textarea
+          id="cf-message"
+          required
+          rows={7}
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+          placeholder="Tell me about the role, project, or idea…"
+          className="w-full resize-y rounded-xl border border-line-soft bg-deep/60 px-4 py-3.5 text-[14px] leading-relaxed text-ink placeholder:text-ink-faint focus:border-line-hot focus:outline-none"
+        />
+      </Field>
 
       <button
         type="submit"
-        className="glow-border px-10 py-3 text-xs tracking-[0.3em] text-[var(--jarvis-cyan)] hover:bg-[rgba(0,212,255,0.1)] transition-all cursor-pointer font-[family-name:var(--font-display)]"
+        className="mt-auto cursor-pointer rounded-xl border border-line-hot bg-teal/10 px-6 py-4 text-[14px] font-semibold text-teal transition-colors duration-300 hover:bg-teal/18"
       >
-        {sent ? "✓ SENT" : "SEND"}
+        Compose Message
       </button>
+      <p className="mt-3 text-center font-mono text-[11px] text-ink-faint">
+        Opens a prefilled draft in your mail app.
+      </p>
     </form>
-  );
+  )
 }
 
 function Field({
-  name,
-  type,
-  placeholder,
+  label,
+  htmlFor,
+  children,
 }: {
-  name: string;
-  type: string;
-  placeholder: string;
+  label: string
+  htmlFor: string
+  children: React.ReactNode
 }) {
   return (
-    <input
-      name={name}
-      type={type}
-      placeholder={placeholder}
-      required
-      className="w-full bg-transparent border-b border-[var(--jarvis-border)] pb-2 text-sm text-center text-[var(--jarvis-text)] placeholder-[var(--jarvis-text-dim)] focus:border-[var(--jarvis-cyan)] focus:outline-none transition-colors"
-    />
-  );
+    <div className="mb-5">
+      <label
+        htmlFor={htmlFor}
+        className="mb-2 block font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-mute"
+      >
+        {label}
+      </label>
+      {children}
+    </div>
+  )
 }

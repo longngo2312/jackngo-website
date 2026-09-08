@@ -1,43 +1,27 @@
-import { useState, useCallback } from 'react'
-import Scene3D from './components/Scene3D'
-import BootSequence from './components/BootSequence'
+import Backdrop from './components/Backdrop'
 import Navigation from './components/Navigation'
 import HeroSection from './components/HeroSection'
-import AboutSection from './components/AboutSection'
+import ExperienceSection from './components/ExperienceSection'
+import EducationSection from './components/EducationSection'
 import ProjectsSection from './components/ProjectsSection'
-import TechStackSection from './components/TechStackSection'
+import StackSection from './components/StackSection'
 import ContactSection from './components/ContactSection'
+import ScrollTop from './components/ScrollTop'
 
-function App() {
-  const [booted, setBooted] = useState(false)
-
-  const handleBootComplete = useCallback(() => {
-    setBooted(true)
-  }, [])
-
+export default function App() {
   return (
-    <div className="scanline">
-      {/* 3D Background */}
-      <Scene3D />
-
-      {/* Boot sequence overlay */}
-      {!booted && <BootSequence onComplete={handleBootComplete} />}
-
-      {/* Main content */}
-      {booted && (
-        <>
-          <Navigation />
-          <main className="flex flex-col items-center">
-            <HeroSection />
-            <AboutSection />
-            <ProjectsSection />
-            <TechStackSection />
-            <ContactSection />
-          </main>
-        </>
-      )}
-    </div>
+    <>
+      <Backdrop />
+      <Navigation />
+      <main className="md:pb-28">
+        <HeroSection />
+        <ExperienceSection />
+        <EducationSection />
+        <ProjectsSection />
+        <StackSection />
+        <ContactSection />
+      </main>
+      <ScrollTop />
+    </>
   )
 }
-
-export default App
