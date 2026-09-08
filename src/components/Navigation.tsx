@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { navItems, profile } from '../data/profile'
 import Dock from './Dock'
+import CardNav, { type CardNavItem } from './CardNav'
 import { BriefcaseIcon, CapIcon, GridIcon, HomeIcon, LayersIcon, MailIcon } from './icons'
 
 /** Icon per section id, keyed so the dock stays in sync with navItems. */
@@ -13,9 +14,51 @@ const NAV_ICONS: Record<string, React.ReactNode> = {
   contact: <MailIcon />,
 }
 
+/** Mobile card groups — six sections don't fit a phone bar, three cards do. */
+const CARD_ITEMS: CardNavItem[] = [
+  {
+    label: 'Profile',
+    bgColor: '#0d1a1d',
+    textColor: '#e6f0f2',
+    links: [
+      { label: 'Home', href: 'home', ariaLabel: 'Go to home' },
+      { label: 'Experience', href: 'experience', ariaLabel: 'Go to experience' },
+      { label: 'Education', href: 'education', ariaLabel: 'Go to education' },
+    ],
+  },
+  {
+    label: 'Work',
+    bgColor: '#0c1a22',
+    textColor: '#e6f0f2',
+    links: [
+      { label: 'Projects', href: 'projects', ariaLabel: 'Go to projects' },
+      { label: 'Stack', href: 'stack', ariaLabel: 'Go to stack' },
+    ],
+  },
+  {
+    label: 'Connect',
+    bgColor: '#0d1c19',
+    textColor: '#e6f0f2',
+    links: [
+      { label: 'Contact', href: 'contact', ariaLabel: 'Go to contact' },
+      {
+        label: 'GitHub',
+        href: profile.links.github,
+        ariaLabel: 'GitHub profile',
+        external: true,
+      },
+      {
+        label: 'LinkedIn',
+        href: profile.links.linkedin,
+        ariaLabel: 'LinkedIn profile',
+        external: true,
+      },
+    ],
+  },
+]
+
 export default function Navigation() {
   const [active, setActive] = useState('home')
-  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -45,32 +88,24 @@ export default function Navigation() {
     return () => observer.disconnect()
   }, [])
 
-  // Lock body scroll while the mobile sheet is open.
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [open])
-
   const goTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
     <>
+      {/* ── Desktop: fixed bar with the dock inline ── */}
       <header
-        className={`fixed inset-x-0 top-0 z-40 h-[var(--nav-h)] transition-colors duration-300 ${
+        className={`fixed inset-x-0 top-0 z-40 hidden h-[var(--nav-h)] transition-colors duration-300 md:block ${
           scrolled ? 'border-b border-line-soft bg-deep/85 backdrop-blur-xl' : 'bg-transparent'
         }`}
       >
-        <nav className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
-          {/* Monogram + identity */}
-          <a href="#home" className="group flex items-center gap-3">
+        <nav className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
+          <a href="#home" className="flex shrink-0 items-center gap-3">
             <span className="grid size-10 place-items-center rounded-xl bg-linear-to-br from-teal to-sky font-display text-[15px] font-semibold text-deep shadow-[0_0_22px_-6px_rgba(45,212,191,0.7)]">
               {profile.initials}
             </span>
-            <span className="hidden leading-tight sm:block">
+            <span className="hidden leading-tight lg:block">
               <span className="block text-[13.5px] font-semibold text-ink">{profile.name}</span>
               <span className="block font-mono text-[10.5px] tracking-wide text-ink-faint">
                 {profile.specialty}
@@ -78,77 +113,47 @@ export default function Navigation() {
             </span>
           </a>
 
-          <div className="flex items-center gap-2">
-            <a
-              href={profile.links.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden rounded-lg border border-line-hot px-4 py-2 font-mono text-[12px] tracking-wide text-teal transition-colors duration-300 hover:bg-teal/10 sm:block"
-            >
-              resume.pdf
-            </a>
-
-            <button
-              type="button"
-              onClick={() => setOpen(v => !v)}
-              aria-expanded={open}
-              aria-label={open ? 'Close navigation' : 'Open navigation'}
-              className="grid size-10 cursor-pointer place-items-center rounded-lg border border-line-soft text-ink md:hidden"
-            >
-              <span className="flex w-5 flex-col gap-1.5">
-                <span
-                  className={`h-px bg-current transition-transform duration-300 ${open ? 'translate-y-[7px] rotate-45' : ''}`}
-                />
-                <span
-                  className={`h-px bg-current transition-opacity duration-300 ${open ? 'opacity-0' : ''}`}
-                />
-                <span
-                  className={`h-px bg-current transition-transform duration-300 ${open ? '-translate-y-[7px] -rotate-45' : ''}`}
-                />
-              </span>
-            </button>
+          {/* Absolute centering so the dock sits on the true page center,
+              independent of the logo and résumé button widths. */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Dock
+              items={navItems.map(item => ({
+                icon: NAV_ICONS[item.id],
+                label: item.label,
+                isActive: active === item.id,
+                onClick: () => goTo(item.id),
+              }))}
+            />
           </div>
+
+          <a
+            href={profile.links.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 rounded-lg border border-line-hot px-4 py-2 font-mono text-[12px] tracking-wide text-teal transition-colors duration-300 hover:bg-teal/10"
+          >
+            resume.pdf
+          </a>
         </nav>
-
-        {/* Mobile sheet — the dock is hover-driven, so touch keeps this list. */}
-        {open && (
-          <div className="fixed inset-0 top-[var(--nav-h)] z-40 bg-deep/97 px-6 pt-8 backdrop-blur-xl md:hidden">
-            <ul className="flex flex-col gap-1">
-              {navItems.map((item, i) => (
-                <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
-                    onClick={() => setOpen(false)}
-                    className={`flex items-baseline gap-4 border-b border-line-soft py-4 font-display text-2xl transition-colors hover:text-teal ${
-                      active === item.id ? 'text-teal' : 'text-ink'
-                    }`}
-                  >
-                    <span className="font-mono text-[11px] text-teal">0{i + 1}</span>
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <a
-              href={profile.links.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 block rounded-xl border border-line-hot py-3.5 text-center font-mono text-[13px] text-teal"
-            >
-              Download resume.pdf
-            </a>
-          </div>
-        )}
       </header>
 
-      <Dock
-        items={navItems.map(item => ({
-          icon: NAV_ICONS[item.id],
-          label: item.label,
-          isActive: active === item.id,
-          onClick: () => goTo(item.id),
-        }))}
-      />
+      {/* ── Mobile: expanding card nav ── */}
+      <div className="md:hidden">
+        <CardNav
+          items={CARD_ITEMS}
+          ctaHref={profile.links.resume}
+          ctaLabel="resume.pdf"
+          onNavigate={goTo}
+          logo={
+            <>
+              <span className="grid size-9 place-items-center rounded-lg bg-linear-to-br from-teal to-sky font-display text-[13px] font-semibold text-deep">
+                {profile.initials}
+              </span>
+              <span className="text-[13.5px] font-semibold text-ink">{profile.name}</span>
+            </>
+          }
+        />
+      </div>
     </>
   )
 }
