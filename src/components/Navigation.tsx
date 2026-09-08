@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { navItems, profile } from '../data/profile'
 import Dock from './Dock'
+import { LogoTile } from './Logo'
 import MobileDock from './MobileDock'
 import RotatingText from './RotatingText'
 import { prefersReducedMotion } from '../lib/reveal'
@@ -61,9 +62,7 @@ export default function Navigation() {
       >
         <nav className="relative mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
           <a href="#home" className="flex shrink-0 items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-xl bg-linear-to-br from-teal to-sky font-display text-[15px] font-semibold text-deep shadow-[0_0_22px_-6px_rgba(45,212,191,0.7)]">
-              {profile.initials}
-            </span>
+            <LogoTile />
             <span className="hidden leading-tight lg:block">
               <span className="block text-[13.5px] font-semibold text-ink">{profile.name}</span>
               {/* Rotating specialty. The fixed height plus overflow-hidden
