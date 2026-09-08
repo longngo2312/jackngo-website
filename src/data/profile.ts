@@ -1,3 +1,5 @@
+import { asset } from '../lib/asset'
+
 export const profile = {
   name: 'Jack Ngo',
   fullName: 'Long Thien Ngo',
@@ -168,20 +170,20 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Languages',
     items: [
-      { name: 'Python', logo: '/logos/python.svg' },
-      { name: 'TypeScript', logo: '/logos/typescript.svg' },
-      { name: 'JavaScript', logo: '/logos/javascript.svg' },
-      { name: 'C / C++', logo: '/logos/cplusplus.svg' },
+      { name: 'Python', logo: asset('/logos/python.svg') },
+      { name: 'TypeScript', logo: asset('/logos/typescript.svg') },
+      { name: 'JavaScript', logo: asset('/logos/javascript.svg') },
+      { name: 'C / C++', logo: asset('/logos/cplusplus.svg') },
       { name: 'SQL', mono: 'SQL' },
     ],
   },
   {
     group: 'Frameworks & Libraries',
     items: [
-      { name: 'React', logo: '/logos/react.svg' },
-      { name: 'Node.js', logo: '/logos/nodejs.svg' },
-      { name: 'Express', logo: '/logos/express.svg', invert: true },
-      { name: 'FastAPI', logo: '/logos/fastapi.svg' },
+      { name: 'React', logo: asset('/logos/react.svg') },
+      { name: 'Node.js', logo: asset('/logos/nodejs.svg') },
+      { name: 'Express', logo: asset('/logos/express.svg'), invert: true },
+      { name: 'FastAPI', logo: asset('/logos/fastapi.svg') },
       { name: 'LangGraph', mono: 'LG' },
       { name: 'YOLO', mono: 'YO' },
     ],
@@ -189,9 +191,9 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Databases & Storage',
     items: [
-      { name: 'SQLite', logo: '/logos/sqlite.svg' },
-      { name: 'MongoDB', logo: '/logos/mongodb.svg' },
-      { name: 'PostgreSQL', logo: '/logos/postgresql.svg' },
+      { name: 'SQLite', logo: asset('/logos/sqlite.svg') },
+      { name: 'MongoDB', logo: asset('/logos/mongodb.svg') },
+      { name: 'PostgreSQL', logo: asset('/logos/postgresql.svg') },
       { name: 'ChromaDB', mono: 'CH' },
       { name: 'sqlite-vec', mono: 'VEC' },
     ],
@@ -199,9 +201,9 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Tools & Platforms',
     items: [
-      { name: 'Git', logo: '/logos/git.svg' },
-      { name: 'Docker', logo: '/logos/docker.svg' },
-      { name: 'Cloudflare', logo: '/logos/cloudflare.svg' },
+      { name: 'Git', logo: asset('/logos/git.svg') },
+      { name: 'Docker', logo: asset('/logos/docker.svg') },
+      { name: 'Cloudflare', logo: asset('/logos/cloudflare.svg') },
       { name: 'Linux', mono: 'LX' },
       { name: 'WebSockets', mono: 'WS' },
       { name: 'Tesseract', mono: 'OCR' },

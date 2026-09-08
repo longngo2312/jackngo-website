@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/profile'
+import { asset } from '../lib/asset'
 import { Chip } from './ui'
 import DepthText from './DepthText'
 import { prefersReducedMotion, stagger, useReveal } from '../lib/reveal'
@@ -37,7 +38,7 @@ function Portrait({ className = '' }: { className?: string }) {
     <div className={`relative ${className}`}>
       <span className="absolute -inset-2 rounded-full bg-linear-to-br from-teal/45 to-sky/25 blur-lg" />
       <img
-        src="/JackNgo.png"
+        src={asset("/JackNgo.png")}
         alt={`Portrait of ${profile.name}`}
         width={160}
         height={160}

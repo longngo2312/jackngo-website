@@ -4,5 +4,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/jackngo-website",
+  // Repo is served from https://longngo2312.github.io/jackngo-website/
+  base: "/jackngo-website/",
 });
