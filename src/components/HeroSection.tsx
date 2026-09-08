@@ -6,23 +6,56 @@ import DepthText from './DepthText'
 import { prefersReducedMotion, stagger, useReveal } from '../lib/reveal'
 import { GithubIcon, LinkedinIcon, MailIcon, DownloadIcon, ChatIcon } from './icons'
 
-/** Types out the shell command once on mount, then leaves the caret blinking. */
+/** Per-phase delays, in ms. Deleting runs faster than typing, the way a real
+ *  backspace-held terminal does. */
+const TYPE_MS = 55
+const DELETE_MS = 26
+const HOLD_FULL_MS = 2000
+const HOLD_EMPTY_MS = 650
+
+/**
+ * Types the shell command out, holds it, deletes it, and repeats. Driven by a
+ * self-scheduling timeout rather than an interval so each phase can set its
+ * own delay, and so only one timer is ever pending.
+ */
 function TypedCommand() {
+  const full = profile.command
   // Reduced motion starts fully typed, so the effect never has to correct it.
-  const [typed, setTyped] = useState(() => (prefersReducedMotion() ? profile.command : ''))
+  const [typed, setTyped] = useState(() => (prefersReducedMotion() ? full : ''))
 
   useEffect(() => {
     if (prefersReducedMotion()) return
 
-    let i = 0
-    const id = setInterval(() => {
-      i += 1
-      setTyped(profile.command.slice(0, i))
-      if (i >= profile.command.length) clearInterval(id)
-    }, 45)
+    let count = 0
+    let deleting = false
+    let timer: ReturnType<typeof setTimeout>
 
-    return () => clearInterval(id)
-  }, [])
+    const tick = () => {
+      if (deleting) {
+        count -= 1
+        setTyped(full.slice(0, count))
+        if (count === 0) {
+          deleting = false
+          timer = setTimeout(tick, HOLD_EMPTY_MS)
+        } else {
+          timer = setTimeout(tick, DELETE_MS)
+        }
+        return
+      }
+
+      count += 1
+      setTyped(full.slice(0, count))
+      if (count === full.length) {
+        deleting = true
+        timer = setTimeout(tick, HOLD_FULL_MS)
+      } else {
+        timer = setTimeout(tick, TYPE_MS)
+      }
+    }
+
+    timer = setTimeout(tick, 400)
+    return () => clearTimeout(timer)
+  }, [full])
 
   return (
     <p className="font-mono text-[12px] sm:text-[14.5px]">

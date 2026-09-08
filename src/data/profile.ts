@@ -1,4 +1,21 @@
-import { asset } from '../lib/asset'
+// Logos are imported rather than referenced by URL so Vite fingerprints and
+// inlines them into the bundle. As /logos/*.svg files they were separate
+// requests on a path that ad-blocker filter lists match, which left the
+// stack section empty for some visitors.
+import pythonLogo from '../assets/logos/python.svg'
+import typescriptLogo from '../assets/logos/typescript.svg'
+import javascriptLogo from '../assets/logos/javascript.svg'
+import cplusplusLogo from '../assets/logos/cplusplus.svg'
+import reactLogo from '../assets/logos/react.svg'
+import nodejsLogo from '../assets/logos/nodejs.svg'
+import expressLogo from '../assets/logos/express.svg'
+import fastapiLogo from '../assets/logos/fastapi.svg'
+import sqliteLogo from '../assets/logos/sqlite.svg'
+import mongodbLogo from '../assets/logos/mongodb.svg'
+import postgresqlLogo from '../assets/logos/postgresql.svg'
+import gitLogo from '../assets/logos/git.svg'
+import dockerLogo from '../assets/logos/docker.svg'
+import cloudflareLogo from '../assets/logos/cloudflare.svg'
 
 export const profile = {
   name: 'Jack Ngo',
@@ -170,20 +187,20 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Languages',
     items: [
-      { name: 'Python', logo: asset('/logos/python.svg') },
-      { name: 'TypeScript', logo: asset('/logos/typescript.svg') },
-      { name: 'JavaScript', logo: asset('/logos/javascript.svg') },
-      { name: 'C / C++', logo: asset('/logos/cplusplus.svg') },
+      { name: 'Python', logo: pythonLogo },
+      { name: 'TypeScript', logo: typescriptLogo },
+      { name: 'JavaScript', logo: javascriptLogo },
+      { name: 'C / C++', logo: cplusplusLogo },
       { name: 'SQL', mono: 'SQL' },
     ],
   },
   {
     group: 'Frameworks & Libraries',
     items: [
-      { name: 'React', logo: asset('/logos/react.svg') },
-      { name: 'Node.js', logo: asset('/logos/nodejs.svg') },
-      { name: 'Express', logo: asset('/logos/express.svg'), invert: true },
-      { name: 'FastAPI', logo: asset('/logos/fastapi.svg') },
+      { name: 'React', logo: reactLogo },
+      { name: 'Node.js', logo: nodejsLogo },
+      { name: 'Express', logo: expressLogo, invert: true },
+      { name: 'FastAPI', logo: fastapiLogo },
       { name: 'LangGraph', mono: 'LG' },
       { name: 'YOLO', mono: 'YO' },
     ],
@@ -191,9 +208,9 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Databases & Storage',
     items: [
-      { name: 'SQLite', logo: asset('/logos/sqlite.svg') },
-      { name: 'MongoDB', logo: asset('/logos/mongodb.svg') },
-      { name: 'PostgreSQL', logo: asset('/logos/postgresql.svg') },
+      { name: 'SQLite', logo: sqliteLogo },
+      { name: 'MongoDB', logo: mongodbLogo },
+      { name: 'PostgreSQL', logo: postgresqlLogo },
       { name: 'ChromaDB', mono: 'CH' },
       { name: 'sqlite-vec', mono: 'VEC' },
     ],
@@ -201,9 +218,9 @@ export const stack: { group: string; items: StackItem[] }[] = [
   {
     group: 'Tools & Platforms',
     items: [
-      { name: 'Git', logo: asset('/logos/git.svg') },
-      { name: 'Docker', logo: asset('/logos/docker.svg') },
-      { name: 'Cloudflare', logo: asset('/logos/cloudflare.svg') },
+      { name: 'Git', logo: gitLogo },
+      { name: 'Docker', logo: dockerLogo },
+      { name: 'Cloudflare', logo: cloudflareLogo },
       { name: 'Linux', mono: 'LX' },
       { name: 'WebSockets', mono: 'WS' },
       { name: 'Tesseract', mono: 'OCR' },
