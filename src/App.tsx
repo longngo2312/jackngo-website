@@ -13,7 +13,7 @@ export default function App() {
     <>
       <Backdrop />
       <Navigation />
-      <main>
+      <main className="pb-24 md:pb-0">
         <HeroSection />
         <ExperienceSection />
         <EducationSection />

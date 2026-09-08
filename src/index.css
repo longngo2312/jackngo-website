@@ -52,9 +52,16 @@
 
   html {
     scroll-behavior: smooth;
-    /* Anchors land below the fixed nav rather than under it. */
-    scroll-padding-top: calc(var(--nav-h) + 24px);
+    /* Phones have no top bar — the dock floats at the bottom — so only the
+       desktop layout needs the anchor offset. */
+    scroll-padding-top: 24px;
     -webkit-text-size-adjust: 100%;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: calc(var(--nav-h) + 24px);
+    }
   }
 
   body {

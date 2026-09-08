@@ -88,7 +88,7 @@ export default function HeroSection() {
     <section
       id="home"
       ref={ref}
-      className="relative flex w-full items-center px-5 pb-20 pt-[calc(var(--nav-h)+3.5rem)] sm:px-8 lg:min-h-screen lg:px-12 lg:pt-[calc(var(--nav-h)+2rem)]"
+      className="relative flex w-full items-center px-5 pb-20 pt-10 sm:px-8 md:pt-[calc(var(--nav-h)+2.5rem)] lg:min-h-screen lg:px-12 lg:pt-[calc(var(--nav-h)+2rem)]"
     >
       <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         {/* ── Identity: centered on mobile, left-aligned from lg ── */}

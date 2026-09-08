@@ -39,6 +39,15 @@ export const profile = {
   snapshot:
     'B.S. Computer Science at the University of North Texas (3.9 GPA, expected May 2028) · Software engineering intern at Eudaimonic Inc · Research assistant in UNT’s High Performance Cloud Computing Lab · Shipped AI agents, real-time React apps, and multi-tenant backends.',
   pills: ['React', 'TypeScript', 'Node.js', 'Python', 'SQL', 'AI Apps'],
+  // Cycled under the name by RotatingText. Kept to a similar length so the
+  // line's width doesn't lurch between entries.
+  rotating: [
+    'full-stack web apps',
+    'applied AI systems',
+    'multi-tenant backends',
+    'real-time interfaces',
+    'async data pipelines',
+  ],
 }
 
 export const navItems = [

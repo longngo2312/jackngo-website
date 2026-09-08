@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { navItems, profile } from '../data/profile'
 import Dock from './Dock'
-import CardNav, { type CardNavItem } from './CardNav'
+import MobileDock from './MobileDock'
+import RotatingText from './RotatingText'
+import { prefersReducedMotion } from '../lib/reveal'
 import { BriefcaseIcon, CapIcon, GridIcon, HomeIcon, LayersIcon, MailIcon } from './icons'
 
 /** Icon per section id, keyed so the dock stays in sync with navItems. */
@@ -13,49 +15,6 @@ const NAV_ICONS: Record<string, React.ReactNode> = {
   stack: <LayersIcon />,
   contact: <MailIcon />,
 }
-
-/** Mobile card groups — six sections don't fit a phone bar, three cards do. */
-const CARD_ITEMS: CardNavItem[] = [
-  {
-    label: 'Profile',
-    bgColor: '#0d1a1d',
-    textColor: '#e6f0f2',
-    links: [
-      { label: 'Home', href: 'home', ariaLabel: 'Go to home' },
-      { label: 'Experience', href: 'experience', ariaLabel: 'Go to experience' },
-      { label: 'Education', href: 'education', ariaLabel: 'Go to education' },
-    ],
-  },
-  {
-    label: 'Work',
-    bgColor: '#0c1a22',
-    textColor: '#e6f0f2',
-    links: [
-      { label: 'Projects', href: 'projects', ariaLabel: 'Go to projects' },
-      { label: 'Stack', href: 'stack', ariaLabel: 'Go to stack' },
-    ],
-  },
-  {
-    label: 'Connect',
-    bgColor: '#0d1c19',
-    textColor: '#e6f0f2',
-    links: [
-      { label: 'Contact', href: 'contact', ariaLabel: 'Go to contact' },
-      {
-        label: 'GitHub',
-        href: profile.links.github,
-        ariaLabel: 'GitHub profile',
-        external: true,
-      },
-      {
-        label: 'LinkedIn',
-        href: profile.links.linkedin,
-        ariaLabel: 'LinkedIn profile',
-        external: true,
-      },
-    ],
-  },
-]
 
 export default function Navigation() {
   const [active, setActive] = useState('home')
@@ -107,14 +66,32 @@ export default function Navigation() {
             </span>
             <span className="hidden leading-tight lg:block">
               <span className="block text-[13.5px] font-semibold text-ink">{profile.name}</span>
-              <span className="block font-mono text-[10.5px] tracking-wide text-ink-faint">
-                {profile.specialty}
+              {/* Rotating specialty. The fixed height plus overflow-hidden
+                  gives the y-axis transition something to clip against —
+                  without it, exiting characters ride up over the name. The
+                  min-width stops the header reflowing as phrases swap. */}
+              <span className="block h-4 min-w-42 overflow-hidden font-mono text-[10.5px] leading-4 tracking-wide text-ink-faint">
+                <RotatingText
+                  texts={profile.rotating}
+                  mainClassName="text-teal leading-4"
+                  auto={!prefersReducedMotion()}
+                  rotationInterval={2800}
+                  staggerDuration={0.015}
+                  staggerFrom="first"
+                  splitBy="characters"
+                  transition={{ type: 'spring', damping: 28, stiffness: 340 }}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: '-120%', opacity: 0 }}
+                  splitLevelClassName="overflow-hidden"
+                />
               </span>
             </span>
           </a>
 
           {/* Absolute centering so the dock sits on the true page center,
-              independent of the logo and résumé button widths. */}
+              independent of the logo and résumé button widths. Phones get the
+              floating bottom dock instead. */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Dock
               items={navItems.map(item => ({
@@ -137,23 +114,15 @@ export default function Navigation() {
         </nav>
       </header>
 
-      {/* ── Mobile: expanding card nav ── */}
-      <div className="md:hidden">
-        <CardNav
-          items={CARD_ITEMS}
-          ctaHref={profile.links.resume}
-          ctaLabel="resume.pdf"
-          onNavigate={goTo}
-          logo={
-            <>
-              <span className="grid size-9 place-items-center rounded-lg bg-linear-to-br from-teal to-sky font-display text-[13px] font-semibold text-deep">
-                {profile.initials}
-              </span>
-              <span className="text-[13.5px] font-semibold text-ink">{profile.name}</span>
-            </>
-          }
-        />
-      </div>
+      {/* ── Mobile: floating bottom dock ── */}
+      <MobileDock
+        items={navItems.map(item => ({
+          icon: NAV_ICONS[item.id],
+          label: item.label,
+          isActive: active === item.id,
+          onClick: () => goTo(item.id),
+        }))}
+      />
     </>
   )
 }
