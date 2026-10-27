@@ -42,7 +42,10 @@ export default function ProjectsSection() {
               ))}
             </div>
 
-            <RepoLink href={lead.repo} />
+            <div className="flex flex-wrap gap-x-6">
+              {lead.demo && <RepoLink href={lead.demo} label="Live demo" />}
+              <RepoLink href={lead.repo} />
+            </div>
           </div>
 
           {/* Metrics rail */}
@@ -59,6 +62,22 @@ export default function ProjectsSection() {
             ))}
           </div>
         </div>
+
+        {/* First shot full width, the rest in a row beneath it. */}
+        {lead.media && (
+          <div className="mt-8 grid grid-cols-2 gap-3">
+            {lead.media.map((m, i) => (
+              <a key={m.src} href={m.src} target="_blank" rel="noopener noreferrer" className={i === 0 ? 'col-span-2' : ''}>
+                <img
+                  src={m.src}
+                  alt={m.alt}
+                  loading="lazy"
+                  className="w-full rounded-xl border border-line-soft"
+                />
+              </a>
+            ))}
+          </div>
+        )}
       </article>
 
       {/* Remaining projects */}
@@ -116,7 +135,7 @@ export default function ProjectsSection() {
   )
 }
 
-function RepoLink({ href }: { href: string }) {
+function RepoLink({ href, label = 'View source' }: { href: string; label?: string }) {
   return (
     <a
       href={href}
@@ -124,7 +143,7 @@ function RepoLink({ href }: { href: string }) {
       rel="noopener noreferrer"
       className="group mt-6 inline-flex items-center gap-2 font-mono text-[12.5px] text-sky transition-colors duration-300 hover:text-teal"
     >
-      View source
+      {label}
       <span className="transition-transform duration-300 group-hover:translate-x-1">
         <ArrowIcon />
       </span>

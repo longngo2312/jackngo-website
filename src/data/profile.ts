@@ -16,6 +16,9 @@ import postgresqlLogo from '../assets/logos/postgresql.svg'
 import gitLogo from '../assets/logos/git.svg'
 import dockerLogo from '../assets/logos/docker.svg'
 import cloudflareLogo from '../assets/logos/cloudflare.svg'
+import docReview from '../assets/projects/docextract-review.png'
+import docSummary from '../assets/projects/docextract-summary.png'
+import docChat from '../assets/projects/docextract-chat.png'
 
 export const profile = {
   name: 'Jack Ngo',
@@ -52,9 +55,9 @@ export const profile = {
 
 export const navItems = [
   { id: 'home', label: 'Home' },
+  { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
-  { id: 'projects', label: 'Projects' },
   { id: 'stack', label: 'Stack' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -127,14 +130,20 @@ export const projects = [
     subtitle: 'Structured data from unstructured docs',
     meta: 'Jul 2026 - Present',
     description:
-      'A multi-tenant platform that turns documents into reviewable structured data. Per-tenant SQLite databases with a shared admin database for auth and job scheduling; an async pipeline driven by SQLite change data capture on WAL inserts feeds Tesseract OCR and zero-shot LLM extraction. Every extracted value carries a verbatim source quote.',
+      'A multi-tenant platform that turns documents into reviewable structured data. Per-tenant SQLite databases and a durable job queue feed Tesseract OCR and local LLM extraction. Every extracted value carries a verbatim source quote that the server checks and highlights in the original. Once a person reviews a document, it is indexed in Qdrant, and a chat answers questions across reviewed documents with server-verified citations.',
     metrics: [
-      { label: 'Query engine', value: 'Hybrid RRF' },
+      { label: 'Citations', value: 'Verified' },
       { label: 'Isolation', value: 'Per-tenant DB' },
       { label: 'Inference cost', value: '$0' },
     ],
-    tech: ['Node', 'Express', 'SQLite', 'sqlite-vec', 'Tesseract OCR', 'LLM'],
-    repo: 'https://github.com/longngo2312/LongMentorshipSummer2026CPI/tree/main/DocumentExtraction',
+    tech: ['Node', 'Express', 'SQLite', 'Qdrant', 'Ollama', 'Tesseract OCR', 'React', 'Docker'],
+    repo: 'https://github.com/longngo2312/DocumentExtraction',
+    demo: 'https://docextract-jackngo.dev',
+    media: [
+      { src: docReview, alt: 'Review screen: a syllabus PDF with the cited passage highlighted beside the extracted fields' },
+      { src: docSummary, alt: 'Generated document summary with key findings and items to check by hand' },
+      { src: docChat, alt: 'Chat answering a question about exam dates with numbered citations' },
+    ],
     status: 'Active',
   },
   {

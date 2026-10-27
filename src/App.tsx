@@ -15,9 +15,9 @@ export default function App() {
       <Navigation />
       <main className="pb-24 md:pb-0">
         <HeroSection />
+        <ProjectsSection />
         <ExperienceSection />
         <EducationSection />
-        <ProjectsSection />
         <StackSection />
         <ContactSection />
       </main>
